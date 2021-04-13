@@ -1,0 +1,96 @@
+#task 1
+SELECT model, speed, hd
+FROM PC
+WHERE price < 500
+
+
+#task 2
+SELECT DISTINCT maker
+FROM Product
+WHERE type = 'printer'
+
+
+#task 3
+SELECT model,ram, screen
+FROM Laptop
+WHERE price>1000
+
+
+#task 4
+SELECT *
+FROM Printer
+Where color = 'y'
+
+
+#task 5
+SELECT model, speed, hd
+FROM PC
+WHERE (cd= '12x' or cd = '24x') and price < 600
+
+
+#task 6
+SELECT DISTINCT maker, speed
+FROM Product INNER JOIN
+Laptop ON Laptop.model = Product.model
+WHERE Laptop.hd>=10
+
+
+#task 7
+SELECT Product.model, price
+FROM Product INNER JOIN PC
+ON Product.model = PC.model
+WHERE maker = 'B'
+UNION
+SELECT Product.model, price
+FROM Product INNER JOIN Laptop
+ON Product.model = Laptop.model
+WHERE maker = 'B'
+UNION
+SELECT Product.model, price
+FROM Product INNER JOIN Printer
+ON Product.model = Printer.model
+WHERE maker = 'B'
+
+
+#task 8
+SELECT DISTINCT maker
+FROM product 
+WHERE type = 'PC' AND
+maker NOT IN (SELECT DISTINCT maker
+FROM product 
+WHERE type = 'Laptop')
+
+
+#task 9
+SELECT DISTINCT maker
+FROM Product INNER JOIN PC
+ON Product.model = PC.model
+WHERE speed >= 450
+
+#task 10
+SELECT model, price
+FROM Printer
+WHERE price = (SELECT MAX(price)
+FROM Printer
+)
+
+# task 11
+SELECT AVG(speed) AS средняя_скорость
+FROM PC
+
+
+#task 12
+SELECT AVG(speed) AS Среднняя_скорость
+FROM Laptop
+WHERE price > 1000
+
+
+#task 13
+SELECT AVG(speed) AS Среднняя_скорость
+FROM PC INNER JOIN Product
+ON PC.model = Product.model
+WHERE maker = 'A'
+
+
+
+
