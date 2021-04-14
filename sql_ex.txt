@@ -91,6 +91,59 @@ FROM PC INNER JOIN Product
 ON PC.model = Product.model
 WHERE maker = 'A'
 
+#task 14
+SELECT Ships.class, name, country
+FROM Ships INNER JOIN Classes
+ON Ships.class = Classes.class
+WHERE numGuns >= 10
 
+
+#task 15
+SELECT DISTINCT hd
+FROM PC
+GROUP BY hd
+HAVING COUNT(hd) > 1
+
+
+#task 16
+SELECT DISTINCT PC1.model, PC2.model, PC1.speed, PC1.ram
+FROM PC PC1, PC PC2
+WHERE PC1.speed = PC2.speed AND
+PC1.ram = PC2.ram AND
+PC1.model > PC2.model
+
+
+#task 17
+SELECT DISTINCT type, Laptop.model, speed
+FROM Laptop INNER JOIN Product
+ON Laptop.model = Product.model
+WHERE speed < (SELECT MIN(speed)
+FROM PC)
+
+
+#task 18
+SELECT DISTINCT maker, price
+FROM Printer INNER JOIN Product
+ON Printer.model = Product.model
+WHERE price = (SELECT MIN(price) 
+FROM Printer
+WHERE color = 'y') AND
+color = 'y'
+
+
+#task 19
+SELECT maker, 
+    AVG(screen) AS Avg_screen
+FROM Laptop INNER JOIN Product
+ON Laptop.model = Product.model
+GROUP BY maker
+
+
+#task 20
+SELECT Maker, COUNT(model)
+FROM Product
+WHERE type = 'PC'
+GROUP BY Maker
+HAVING COUNT(model) >= 3
 
 
