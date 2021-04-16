@@ -147,3 +147,73 @@ GROUP BY Maker
 HAVING COUNT(model) >= 3
 
 
+#task 21
+SELECT maker, MAX(price)
+FROM PC INNER JOIN Product
+ON PC.model = Product.model
+GROUP BY maker
+
+
+#task 22
+SELECT speed, AVG(price) AS Avg_price
+FROM PC
+WHERE speed > 600
+GROUP BY speed
+
+
+#task 23
+SELECT DISTINCT maker
+FROM Product INNER JOIN PC
+ON Product.model = PC.model
+WHERE speed >=750 AND maker IN(
+SELECT  maker
+FROM Product INNER JOIN Laptop
+ON Product.model = Laptop.model
+WHERE speed >= 750)
+
+
+#task 24
+SELECT model
+FROM (
+SELECT model, price 
+FROM PC 
+UNION
+SELECT model, price 
+FROM Laptop 
+UNION
+SELECT model, price 
+FROM Printer
+) this_table
+WHERE price = (
+SELECT MAX(price) 
+FROM (
+SELECT model, price 
+FROM PC 
+UNION
+SELECT model, price 
+FROM Laptop 
+UNION
+SELECT model, price 
+FROM Printer
+)this_table2
+)
+
+# task 31
+SELECT class, country
+FROM Classes
+WHERE bore >=16
+
+
+#task 33
+SELECT ship
+FROM Outcomes
+WHERE battle = 'North Atlantic' AND
+result = 'sunk'
+
+
+#task 42
+SELECT ship, battle
+FROM Outcomes
+WHERE result = 'sunk'
+
+
