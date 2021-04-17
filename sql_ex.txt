@@ -198,6 +198,75 @@ FROM Printer
 )this_table2
 )
 
+
+#task 25
+SELECT DISTINCT maker
+FROM PC INNER JOIN Product
+ON PC.model = Product.model
+WHERE maker IN (
+SELECT maker
+FROM Product
+WHERE type = 'printer'
+)
+AND speed = (
+SELECT max(speed)
+FROM PC
+WHERE ram = (
+SELECT MIN(ram)
+FROM PC))
+AND ram = (
+SELECT MIN(ram)
+FROM PC)
+
+
+#task 26
+SELECT AVG(price)
+FROM (
+SELECT code, speed, ram, hd, price
+FROM PC INNER JOIN Product
+ON PC.model=Product.model
+WHERE maker = 'a'
+UNION
+SELECT code, speed, ram, hd, price
+FROM Laptop INNER JOIN Product
+ON Laptop.model=Product.model
+WHERE maker = 'a'
+) this_table
+
+
+# task 27
+
+SELECT maker, AVG(hd)
+FROM PC INNER JOIN Product
+ON PC.model = Product.model
+WHERE maker IN (
+SELECT DISTINCT maker
+FROM Product
+WHERE type = 'printer'
+)
+GROUP BY maker
+
+
+# task 28
+SELECT COUNT(maker)
+FROM (SELECT maker 
+FROM Product
+GROUP BY maker
+HAVING COUNT(model)=1) this_table
+
+
+# task 29
+SELECT income_o.point, income_o.[date], inc, out
+FROM income_o LEFT JOIN Outcome_o
+ON income_o.point = Outcome_o.point
+AND income_o.[date] = Outcome_o.[date]
+UNION
+SELECT Outcome_o.point,  Outcome_o.[date], inc, out
+FROM income_o RIGHT JOIN Outcome_o
+ON income_o.point = Outcome_o.point
+AND income_o.[date] = Outcome_o.[date]
+
+
 # task 31
 SELECT class, country
 FROM Classes
