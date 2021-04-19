@@ -267,17 +267,62 @@ ON income_o.point = Outcome_o.point
 AND income_o.[date] = Outcome_o.[date]
 
 
+# task 30
+SELECT point, [date], SUM(outs), SUM(incs)
+FROM (
+SELECT point, [date], SUM(out) AS outs, null AS incs
+FROM Outcome
+GROUP by point, [date]
+UNION
+SELECT point, date, null AS outs, SUM(inc) AS incs
+FROM Income
+GROUP by point, [date]
+)this_table
+GROUP by point, [date]
+
+
 # task 31
 SELECT class, country
 FROM Classes
 WHERE bore >=16
 
 
-#task 33
+# task 32
+SELECT country, CAST(AVG(POWER(bore, 3)/2) AS DECIMAL(6,2))
+FROM (
+SELECT country, bore, name
+FROM Classes INNER JOIN Ships
+ON Classes.class = Ships.class
+UNION
+SELECT country, bore, ship
+FROM Classes INNER JOIN Outcomes
+ON Classes.class = Outcomes.ship
+)this_table
+GROUP BY country
+
+
+# task 33
 SELECT ship
 FROM Outcomes
 WHERE battle = 'North Atlantic' AND
 result = 'sunk'
+
+
+# task 34
+SELECT DISTINCT name
+FROM Ships INNER JOIN Classes
+ON Ships.class = Classes.class
+WHERE displacement > 35000
+AND launched >= 1922
+AND type = 'bb'
+
+
+# task 35
+SELECT model, type
+FROM Product
+WHERE model NOT LIKE '%[^0-9]%'
+OR model NOT LIKE '%[^a-zA-Z]%'
+
 
 
 #task 42
