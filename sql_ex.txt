@@ -1,34 +1,51 @@
 #task 1
+Найдите номер модели, скорость и размер жесткого диска для всех ПК стоимостью менее 500 дол.
+Вывести: model, speed и hd
+
 SELECT model, speed, hd
 FROM PC
 WHERE price < 500
 
 
 #task 2
+Найдите производителей принтеров. Вывести: maker
+
 SELECT DISTINCT maker
 FROM Product
 WHERE type = 'printer'
 
 
 #task 3
+Найдите номер модели, объем памяти и размеры экранов ПК-блокнотов, 
+цена которых превышает 1000 дол.
+
+
 SELECT model,ram, screen
 FROM Laptop
 WHERE price>1000
 
 
 #task 4
+Найдите все записи таблицы Printer для цветных принтеров.
+
 SELECT *
 FROM Printer
 Where color = 'y'
 
 
 #task 5
+Найдите номер модели, скорость и размер жесткого диска ПК, 
+имеющих 12x или 24x CD и цену менее 600 дол.
+
 SELECT model, speed, hd
 FROM PC
 WHERE (cd= '12x' or cd = '24x') and price < 600
 
 
 #task 6
+Для каждого производителя, выпускающего ПК-блокноты c объёмом жесткого диска не менее 10 Гбайт, 
+найти скорости таких ПК-блокнотов. Вывод: производитель, скорость.
+
 SELECT DISTINCT maker, speed
 FROM Product INNER JOIN
 Laptop ON Laptop.model = Product.model
@@ -36,6 +53,8 @@ WHERE Laptop.hd>=10
 
 
 #task 7
+Найдите номера моделей и цены всех имеющихся в продаже продуктов (любого типа) производителя B (латинская буква).
+
 SELECT Product.model, price
 FROM Product INNER JOIN PC
 ON Product.model = PC.model
@@ -53,6 +72,8 @@ WHERE maker = 'B'
 
 
 #task 8
+Найдите производителя, выпускающего ПК, но не ПК-блокноты.
+
 SELECT DISTINCT maker
 FROM product 
 WHERE type = 'PC' AND
@@ -62,36 +83,51 @@ WHERE type = 'Laptop')
 
 
 #task 9
+Найдите производителей ПК с процессором не менее 450 Мгц. Вывести: Maker
+
 SELECT DISTINCT maker
 FROM Product INNER JOIN PC
 ON Product.model = PC.model
 WHERE speed >= 450
 
+
 #task 10
+Найдите модели принтеров, имеющих самую высокую цену. Вывести: model, price
+
 SELECT model, price
 FROM Printer
 WHERE price = (SELECT MAX(price)
 FROM Printer
 )
 
+
 # task 11
+Найдите среднюю скорость ПК.
+
 SELECT AVG(speed) AS средняя_скорость
 FROM PC
 
 
 #task 12
+Найдите среднюю скорость ПК-блокнотов, цена которых превышает 1000 дол.
+
 SELECT AVG(speed) AS Среднняя_скорость
 FROM Laptop
 WHERE price > 1000
 
 
 #task 13
+Найдите среднюю скорость ПК, выпущенных производителем A.
+
 SELECT AVG(speed) AS Среднняя_скорость
 FROM PC INNER JOIN Product
 ON PC.model = Product.model
 WHERE maker = 'A'
 
 #task 14
+Найдите класс, имя и страну для кораблей из таблицы Ships, 
+имеющих не менее 10 орудий.
+
 SELECT Ships.class, name, country
 FROM Ships INNER JOIN Classes
 ON Ships.class = Classes.class
@@ -99,6 +135,9 @@ WHERE numGuns >= 10
 
 
 #task 15
+Найдите размеры жестких дисков, совпадающих у двух и более PC. 
+Вывести: HD
+
 SELECT DISTINCT hd
 FROM PC
 GROUP BY hd
@@ -106,6 +145,10 @@ HAVING COUNT(hd) > 1
 
 
 #task 16
+Найдите пары моделей PC, имеющих одинаковые скорость и RAM. 
+В результате каждая пара указывается только один раз, т.е. (i,j), но не (j,i), 
+Порядок вывода: модель с большим номером, модель с меньшим номером, скорость и RAM.
+
 SELECT DISTINCT PC1.model, PC2.model, PC1.speed, PC1.ram
 FROM PC PC1, PC PC2
 WHERE PC1.speed = PC2.speed AND
@@ -114,6 +157,9 @@ PC1.model > PC2.model
 
 
 #task 17
+Найдите модели ПК-блокнотов, скорость которых меньше скорости каждого из ПК.
+Вывести: type, model, speed
+
 SELECT DISTINCT type, Laptop.model, speed
 FROM Laptop INNER JOIN Product
 ON Laptop.model = Product.model
@@ -122,6 +168,8 @@ FROM PC)
 
 
 #task 18
+Найдите производителей самых дешевых цветных принтеров. Вывести: maker, price
+
 SELECT DISTINCT maker, price
 FROM Printer INNER JOIN Product
 ON Printer.model = Product.model
@@ -132,6 +180,10 @@ color = 'y'
 
 
 #task 19
+Для каждого производителя, имеющего модели в таблице Laptop, 
+найдите средний размер экрана выпускаемых им ПК-блокнотов.
+Вывести: maker, средний размер экрана.
+
 SELECT maker, 
     AVG(screen) AS Avg_screen
 FROM Laptop INNER JOIN Product
@@ -140,6 +192,9 @@ GROUP BY maker
 
 
 #task 20
+Найдите производителей, выпускающих по меньшей мере три различных модели ПК. 
+Вывести: Maker, число моделей ПК.
+
 SELECT Maker, COUNT(model)
 FROM Product
 WHERE type = 'PC'
@@ -148,6 +203,10 @@ HAVING COUNT(model) >= 3
 
 
 #task 21
+Найдите максимальную цену ПК, выпускаемых каждым производителем, 
+у которого есть модели в таблице PC.
+Вывести: maker, максимальная цена.
+
 SELECT maker, MAX(price)
 FROM PC INNER JOIN Product
 ON PC.model = Product.model
@@ -155,6 +214,10 @@ GROUP BY maker
 
 
 #task 22
+Для каждого значения скорости ПК, превышающего 600 МГц, 
+определите среднюю цену ПК с такой же скоростью. 
+Вывести: speed, средняя цена.
+
 SELECT speed, AVG(price) AS Avg_price
 FROM PC
 WHERE speed > 600
@@ -162,6 +225,10 @@ GROUP BY speed
 
 
 #task 23
+Найдите производителей, которые производили бы как ПК
+со скоростью не менее 750 МГц, так и ПК-блокноты со скоростью не менее 750 МГц.
+Вывести: Maker
+
 SELECT DISTINCT maker
 FROM Product INNER JOIN PC
 ON Product.model = PC.model
@@ -173,6 +240,9 @@ WHERE speed >= 750)
 
 
 #task 24
+Перечислите номера моделей любых типов, 
+имеющих самую высокую цену по всей имеющейся в базе данных продукции.
+
 SELECT model
 FROM (
 SELECT model, price 
@@ -200,6 +270,11 @@ FROM Printer
 
 
 #task 25
+Найдите производителей принтеров, 
+которые производят ПК с наименьшим объемом RAM и с самым быстрым процессором среди всех ПК, 
+имеющих наименьший объем RAM. 
+Вывести: Maker
+
 SELECT DISTINCT maker
 FROM PC INNER JOIN Product
 ON PC.model = Product.model
@@ -220,6 +295,10 @@ FROM PC)
 
 
 #task 26
+Найдите среднюю цену ПК и ПК-блокнотов, 
+выпущенных производителем A (латинская буква). 
+Вывести: одна общая средняя цена.
+
 SELECT AVG(price)
 FROM (
 SELECT code, speed, ram, hd, price
@@ -235,6 +314,9 @@ WHERE maker = 'a'
 
 
 # task 27
+Найдите средний размер диска ПК каждого из тех производителей, 
+которые выпускают и принтеры. 
+Вывести: maker, средний размер HD.
 
 SELECT maker, AVG(hd)
 FROM PC INNER JOIN Product
@@ -248,6 +330,10 @@ GROUP BY maker
 
 
 # task 28
+Используя таблицу Product, 
+определить количество производителей, 
+выпускающих по одной модели.
+
 SELECT COUNT(maker)
 FROM (SELECT maker 
 FROM Product
@@ -256,6 +342,11 @@ HAVING COUNT(model)=1) this_table
 
 
 # task 29
+В предположении, 
+что приход и расход денег на каждом пункте приема фиксируется не чаще одного раза в день 
+[т.е. первичный ключ (пункт, дата)], написать запрос с выходными данными (пункт, дата, приход, расход). 
+Использовать таблицы Income_o и Outcome_o.
+
 SELECT income_o.point, income_o.[date], inc, out
 FROM income_o LEFT JOIN Outcome_o
 ON income_o.point = Outcome_o.point
@@ -268,6 +359,14 @@ AND income_o.[date] = Outcome_o.[date]
 
 
 # task 30
+В предположении, 
+что приход и расход денег на каждом пункте приема фиксируется произвольное число раз 
+(первичным ключом в таблицах является столбец code), 
+требуется получить таблицу, 
+в которой каждому пункту за каждую дату выполнения операций будет соответствовать одна строка.
+Вывод: point, date, суммарный расход пункта за день (out), суммарный приход пункта за день (inc). 
+Отсутствующие значения считать неопределенными (NULL).
+
 SELECT point, [date], SUM(outs), SUM(incs)
 FROM (
 SELECT point, [date], SUM(out) AS outs, null AS incs
@@ -282,12 +381,18 @@ GROUP by point, [date]
 
 
 # task 31
+Для классов кораблей, калибр орудий которых не менее 16 дюймов, укажите класс и страну.
+
 SELECT class, country
 FROM Classes
 WHERE bore >=16
 
 
 # task 32
+Одной из характеристик корабля является половина куба калибра его главных орудий (mw). 
+С точностью до 2 десятичных знаков определите среднее значение mw для кораблей каждой страны, 
+у которой есть корабли в базе данных.
+
 SELECT country, CAST(AVG(POWER(bore, 3)/2) AS DECIMAL(6,2))
 FROM (
 SELECT country, bore, name
@@ -302,6 +407,9 @@ GROUP BY country
 
 
 # task 33
+Укажите корабли, потопленные в сражениях в Северной Атлантике (North Atlantic). 
+Вывод: ship.
+
 SELECT ship
 FROM Outcomes
 WHERE battle = 'North Atlantic' AND
@@ -309,6 +417,12 @@ result = 'sunk'
 
 
 # task 34
+По Вашингтонскому международному договору 
+от начала 1922 г. запрещалось строить линейные корабли водоизмещением более 35 тыс.тонн. 
+Укажите корабли, нарушившие этот договор 
+(учитывать только корабли c известным годом спуска на воду). 
+Вывести названия кораблей.
+
 SELECT DISTINCT name
 FROM Ships INNER JOIN Classes
 ON Ships.class = Classes.class
@@ -318,6 +432,10 @@ AND type = 'bb'
 
 
 # task 35
+В таблице Product найти модели, 
+которые состоят только из цифр или только из латинских букв (A-Z, без учета регистра).
+Вывод: номер модели, тип модели.
+
 SELECT model, type
 FROM Product
 WHERE model NOT LIKE '%[^0-9]%'
@@ -326,6 +444,8 @@ OR model NOT LIKE '%[^a-zA-Z]%'
 
 
 #task 42
+Найдите названия кораблей, потопленных в сражениях, и название сражения, 
+в котором они были потоплены.
 SELECT ship, battle
 FROM Outcomes
 WHERE result = 'sunk'
