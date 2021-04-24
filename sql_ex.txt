@@ -442,6 +442,81 @@ WHERE model NOT LIKE '%[^0-9]%'
 OR model NOT LIKE '%[^a-zA-Z]%'
 
 
+# task 36
+SELECT name
+FROM Classes INNER JOIN Ships
+ON Classes.class = Ships.class
+WHERE Classes.class = name
+UNION 
+SELECT ship
+FROM Classes INNER JOIN Outcomes
+ON Classes.class = Outcomes.ship
+WHERE Classes.class = ship
+
+
+#task 37
+SELECT class
+FROM (
+SELECT class, COUNT(name) AS qte
+FROM (
+SELECT Classes.class, name
+FROM Classes INNER JOIN Ships
+ON Classes.class = Ships.class
+UNION
+SELECT Classes.class, ship
+FROM Classes INNER JOIN  Outcomes
+ON Classes.class =  Outcomes.ship
+
+)This_table
+GROUP BY class
+Having COUNT (*) = 1
+)This_table2
+
+
+#task 38
+SELECT DISTINCT country
+FROM Classes
+Where type = 'bb' 
+AND country  IN (
+SELECT DISTINCT country
+FROM Classes
+Where type = 'bc')
+
+
+#task 39
+SELECT DISTINCT ship 
+FROM Outcomes INNER JOIN Battles bat
+ON battle = name
+WHERE result = 'damaged'
+AND
+ship IN (
+SELECT DISTINCT ship 
+FROM Outcomes INNER JOIN Battles
+ON battle = name
+WHERE bat.[date] < battles.[date])
+
+
+#task 40
+Найти производителей, которые выпускают более одной модели, 
+при этом все выпускаемые производителем модели являются продуктами одного типа.
+Вывести: maker, type
+SELECT maker, type
+FROM product
+WHERE maker IN
+(
+SELECT maker
+FROM (
+SELECT maker, type
+FROM product
+GROUP BY maker, type
+) this_table
+GROUP BY maker
+HAVING COUNT(*)=1
+)
+
+GROUP BY maker, type
+HAVING COUNT(*)>1
+
 
 #task 42
 Найдите названия кораблей, потопленных в сражениях, и название сражения, 
