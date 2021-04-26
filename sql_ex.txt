@@ -70,6 +70,21 @@ FROM Product INNER JOIN Printer
 ON Product.model = Printer.model
 WHERE maker = 'B'
 
+# альтернативное решение
+SELECT Product.model, price
+FROM Product INNER JOIN (
+SELECT model, price
+FROM PC
+UNION
+SELECT model, price
+FROM Laptop
+UNION
+SELECT model, price
+FROM Printer
+) AS vibor
+ON Product.model = vibor.model
+WHERE maker = 'B'
+
 
 #task 8
 Найдите производителя, выпускающего ПК, но не ПК-блокноты.
@@ -516,6 +531,31 @@ HAVING COUNT(*)=1
 
 GROUP BY maker, type
 HAVING COUNT(*)>1
+
+
+#task 41
+Для каждого производителя, у которого присутствуют модели хотя бы в одной из таблиц PC, Laptop или Printer,
+определить максимальную цену на его продукцию.
+Вывод: имя производителя, 
+если среди цен на продукцию данного производителя присутствует NULL, 
+то выводить для этого производителя NULL,
+иначе максимальную цену.
+SELECT DISTINCT maker, CASE
+WHEN MAX(CASE
+WHEN price IS NULL THEN 1 ELSE 0 END) = 0
+THEN MAX(price) END price
+FROM Product INNER JOIN (
+SELECT model, price
+FROM PC
+UNION 
+SELECT model, price
+FROM Laptop
+UNION 
+SELECT model, price
+FROM Printer
+) AS vibor
+ON Product.model = vibor.model
+GROUP BY maker
 
 
 #task 42
